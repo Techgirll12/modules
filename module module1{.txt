@@ -1,0 +1,122 @@
+module module1{
+exports package1;
+}
+
+package package1;
+public class Customer {
+private String name;
+private String email;
+public Customer(String name, String email){
+this.name=name;
+this.email=email;
+}
+public String getName(){
+return name;
+}
+public String getEmail(){
+return email;
+}
+}
+
+module Order.Management {
+exports package3;
+}
+
+package package3;
+public class Order {
+public String customer;
+public String product;
+private int quantity;
+public Order(String customer, String product, int quantity) {
+this.customer = customer;
+this.product = product;
+this.quantity = quantity;
+}
+public String getCustomer(){
+return customer;
+}
+public String getProduct(){
+return product;
+}
+public int getQuantity(){
+return quantity;
+}
+
+}
+
+module Payment.Management {
+exports package4;
+}
+
+package package4;
+public class Payment {
+private double amount;
+public Payment(double amount){
+this.amount=amount;
+}
+public double getAmount(){
+return amount;
+}
+}
+
+module Product.Management {
+exports package2;
+}
+
+package package2;
+public class Product {
+private String name;
+private double price;
+public Product(String name, double price){
+this.name=name;
+this.price=price;
+}
+public String getName(){
+return name;
+}
+public double getPrice(){
+return price;
+}
+}
+
+module Shop.Application {
+requires module1;
+requires Product.Management;
+requires Order.Management;
+requires java.compiler;
+requires java.xml;
+exports package5;
+}
+
+package package5;
+public class Shop {
+}
+
+import package1.Customer ;
+import package2.Product;
+import package3.Order;
+import javax.lang.model.element.Name;
+import javax.xml.validation.Validator;
+import java.util.Scanner;
+public class Main {
+public static void main(String[]args){
+Customer customer= new Customer(&quot;Hamdi&quot;,&quot;hamdi@gmail.com&quot;);
+Product product=new Product(&quot;Apple&quot;, 2000);
+Order order=new Order(&quot;her&quot;,&quot;apple&quot;,2);
+System.out.println(&quot;Customer:&quot;+customer.getName());
+System.out.println(&quot;Product:&quot;+product.getPrice());
+System.out.println(&quot;Quantity:&quot;+order.getQuantity());
+if (order.getQuantity()&gt;1){
+System.out.println( &quot;Discount applied: 10%&quot;);
+double discount= product.getPrice()*0.1;
+System.out.println(&quot;Discount amount&quot;+discount);
+System.out.println(&quot;Final amount&quot; + (product.getPrice()*
+order.getQuantity()-discount));
+}
+else {
+System.out.println(&quot;No discount applied.&quot;);
+System.out.println(&quot;Total Amount:&quot;+ (product.getPrice()*
+order.getQuantity()));
+}
+}
+}
